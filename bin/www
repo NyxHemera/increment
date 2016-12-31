@@ -1,0 +1,38 @@
+var app = require('../app');
+var http = require('http');
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+var server = http.createServer(app);
+
+server.listen(port);
+server.on('error', onErr);
+server.on('listening', onListening);
+
+function normalizePort(val) {
+	var port = parseInt(val, 10);
+
+	if(isNaN(port)) {
+		return val;
+	}
+
+	if(port >=0) {
+		return port;
+	}
+
+	return false;
+}
+
+function onErr(err) {
+	if(err.code == 'EADDRINUSE') {
+		console.error('Port ' + port + ' is already in use.');
+		process.exit(1);
+	}else {
+		console.error(err);
+	}
+}
+
+function onListening() {
+	console.log('Listening on ' + port);
+}
